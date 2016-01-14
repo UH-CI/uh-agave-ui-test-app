@@ -74,7 +74,7 @@
     <script>
     var mydata=""
         function agaveAuth(username, password, tenant_name){
-            if (getAccessTokenCookie("token") == 0){
+            //if (getAccessTokenCookie("token") == 0){
                 //Fetch the Session/Tenant data from AGAVE for the user
                 $.ajax
                 ({
@@ -91,10 +91,10 @@
                   }
                 });
                 
-            }
-            else{
-                alert("user already logged in!")
-            }
+            //}
+            //else{
+            //    alert("user already logged in!")
+            //}
             return
         }
         function getAgaveAccessToken(consumerKey, consumerSecret){
