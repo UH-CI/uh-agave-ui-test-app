@@ -183,7 +183,7 @@
                  <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div id = "panel_heading" class="panel-heading">
                             UH HPC Luster Scratch: /lus/scratch/analysis 
                         </div>
                         <!-- /.panel-heading -->
@@ -317,18 +317,38 @@
             }
             return "";
         }
+        function populateDirectoryTable(dir_data, dir_table,system){
+            dir_table.clear();
+            for (var i = 0; i < mydata.result.length; i++) {
+                var actions = '<span class="fa fa-file"></span>'
+                if (mydata.result[i].type == "dir"){
+                    actions = '<span class="fa fa-folder" onclick="goToStorageFolder(\''+mydata.result[i].path+'\', table, system_id)"></span>'
+                }
+                dir_table.row.add([mydata.result[i].name, mydata.result[i].type, mydata.result[i].length, mydata.result[i].lastModified, mydata.result[i].path, actions])
+            }
+            dir_table.draw();
+        }
+
+        function goToStorageFolder(dir_path, dir_table,system){
+            getStorageDirectoryListing(system, dir_path)
+            populateDirectoryTable(mydata, table)
+            $('#panel_heading').text("UH HPC Luster Scratch: "+dir_path)
+        }
+
         var table = ""
         var mydata = ""
+        var system_id ="sftp.lustre.storage.uhhpc1.its.hawaii.edu"
+        var file_path = "/lus/scratch/seanbc"
         $( document ).ready(function() {
             table = $('#dataTables-filelist').DataTable();
-            var system_id ="sftp.lustre.storage.uhhpc1.its.hawaii.edu"
-            var file_path = "/lus/scratch/seanbc"
-            table.clear();
             getStorageDirectoryListing(system_id, file_path)
-            for (var i = 0; i < mydata.result.length; i++) {
+            populateDirectoryTable(mydata, table,system_id)
+            $('#panel_heading').text("UH HPC Luster Scratch: "+file_path)
+            /*for (var i = 0; i < mydata.result.length; i++) {
                 table.row.add([mydata.result[i].name, mydata.result[i].type, mydata.result[i].length, mydata.result[i].lastModified, mydata.result[i].path, "someaction"])
             }
             table.draw();
+            */
             //table
             //    .clear()
             //    .draw();
