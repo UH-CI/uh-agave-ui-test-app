@@ -184,7 +184,9 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div id = "panel_heading" class="panel-heading">
-                            UH HPC Luster Scratch: /lus/scratch/analysis 
+                            UH HPC Luster Scratch: 
+                            <input id="file_path" type="text" value="/lus/scratch/analysis" size="100">
+                            <button id="path_button" class="btn btn-primary">Go</button>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -332,7 +334,7 @@
         function goToStorageFolder(dir_path, dir_table,system){
             getStorageDirectoryListing(system, dir_path)
             populateDirectoryTable(mydata, table)
-            $('#panel_heading').text("UH HPC Luster Scratch: "+dir_path)
+            $('#file_path').val(dir_path)
         }
 
         var table = ""
@@ -341,9 +343,14 @@
         var file_path = "/lus/scratch/seanbc"
         $( document ).ready(function() {
             table = $('#dataTables-filelist').DataTable();
+            $('#file_path').val(file_path)
             getStorageDirectoryListing(system_id, file_path)
             populateDirectoryTable(mydata, table,system_id)
-            $('#panel_heading').text("UH HPC Luster Scratch: "+file_path)
+            
+
+            $('#path_button').click(function(){
+                goToStorageFolder($('#file_path').val(), table,system_id)
+            })
             /*for (var i = 0; i < mydata.result.length; i++) {
                 table.row.add([mydata.result[i].name, mydata.result[i].type, mydata.result[i].length, mydata.result[i].lastModified, mydata.result[i].path, "someaction"])
             }
