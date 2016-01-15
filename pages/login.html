@@ -112,6 +112,7 @@
               success: function (data){
                 mydata=data
                 setAccessTokenCookie(data.access_token,1)
+                window.location.assign("index.html")
               }
             });   
         }
