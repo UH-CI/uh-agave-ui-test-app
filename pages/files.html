@@ -271,6 +271,27 @@
 
     </div>
     <!-- /#wrapper -->
+    <!-- Modal -->
+    <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="fileModalLabel">Loading Files</h4>
+                </div>
+                <div class="modal-body">
+                    <center>
+                    Fetching File List 
+                    </br>
+                    <h1><span class="fa fa-spinner fa-spin"></span></h1>
+                </center>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
     <!-- jQuery -->
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
@@ -294,6 +315,7 @@
         //file_path = "/lus/scratch/seanbc"
 
         function getStorageDirectoryListing(system_id, file_path){
+            
             $.ajax({
               type: "GET",
               url: "https://agave.iplantc.org:443/files/v2/listings/system/"+system_id+"/"+file_path,
@@ -306,6 +328,9 @@
               data: {},
               success: function (data){
                 mydata= data
+                //populateDirectoryTable(mydata, table)
+                //$('#file_path').val(dir_path)
+                //$('#fileModal').modal('hide');
               }
             }); 
         }
@@ -324,7 +349,7 @@
             for (var i = 0; i < mydata.result.length; i++) {
                 var actions = '<span class="fa fa-file"></span>'
                 if (mydata.result[i].type == "dir"){
-                    actions = '<span class="fa fa-folder" onclick="goToStorageFolder(\''+mydata.result[i].path+'\', table, system_id)"></span>'
+                    actions = '<span class="fa fa-folder btn btn-primary" onclick="goToStorageFolder(\''+mydata.result[i].path+'\', table, system_id)"></span>'
                 }
                 dir_table.row.add([mydata.result[i].name, mydata.result[i].type, mydata.result[i].length, mydata.result[i].lastModified, mydata.result[i].path, actions])
             }
@@ -332,6 +357,7 @@
         }
 
         function goToStorageFolder(dir_path, dir_table,system){
+            //$('#fileModal').modal('show');
             getStorageDirectoryListing(system, dir_path)
             populateDirectoryTable(mydata, table)
             $('#file_path').val(dir_path)
